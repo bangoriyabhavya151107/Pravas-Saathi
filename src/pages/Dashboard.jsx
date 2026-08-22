@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom'
 
 import Navbar from '../components/Navbar'
 import StatCard from '../components/StatCard'
@@ -8,6 +11,8 @@ import PlanningTip from '../components/PlanningTip'
 import { supabase } from '../lib/supabase'
 
 export default function Dashboard() {
+  const navigate = useNavigate()
+
   const [profile, setProfile] =
     useState(null)
 
@@ -60,7 +65,9 @@ export default function Dashboard() {
           .eq('user_id', user.id)
           .order(
             'created_at',
-            { ascending: false }
+            {
+              ascending: false,
+            }
           ),
 
         supabase
@@ -68,7 +75,9 @@ export default function Dashboard() {
           .select('*')
           .order(
             'priority',
-            { ascending: false }
+            {
+              ascending: false,
+            }
           )
           .limit(3),
       ])
@@ -132,8 +141,13 @@ export default function Dashboard() {
       <Navbar authenticated />
 
       <main className="dashboard-page">
+
+        {/* HERO */}
+
         <section className="dashboard-hero">
+
           <div>
+
             <span className="eyebrow">
               YOUR TRAVEL SPACE
             </span>
@@ -147,15 +161,33 @@ export default function Dashboard() {
             <p>
               Ready to plan your next story?
             </p>
+
           </div>
 
-          <Link
-            to="/explore"
-            className="dashboard-primary-button"
-          >
-            Explore destinations →
-          </Link>
+          <div className="dashboard-hero-actions">
+
+            <button
+              type="button"
+              className="dashboard-primary-button"
+              onClick={() =>
+                navigate('/trips/new')
+              }
+            >
+              Plan a new trip →
+            </button>
+
+            <Link
+              to="/explore"
+              className="dashboard-primary-button"
+            >
+              Explore destinations →
+            </Link>
+
+          </div>
+
         </section>
+
+        {/* ERROR */}
 
         {error && (
           <div className="dashboard-error">
@@ -163,7 +195,10 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* STATS */}
+
         <section className="stats-grid">
+
           <StatCard
             label="JOURNEYS"
             value={trips.length}
@@ -197,11 +232,17 @@ export default function Dashboard() {
             }
             description="Personalize your experience"
           />
+
         </section>
 
+        {/* TRIPS */}
+
         <section className="dashboard-section">
+
           <div className="section-heading">
+
             <div>
+
               <span className="eyebrow">
                 YOUR JOURNEYS
               </span>
@@ -209,15 +250,19 @@ export default function Dashboard() {
               <h2>
                 Where are you going?
               </h2>
+
             </div>
 
-            <Link to="/explore">
-              Discover more →
+            <Link to="/trips/new">
+              Plan a new trip →
             </Link>
+
           </div>
 
           {trips.length === 0 ? (
+
             <div className="empty-state">
+
               <span>🧭</span>
 
               <h3>
@@ -225,21 +270,49 @@ export default function Dashboard() {
               </h3>
 
               <p>
-                Explore destinations and start
-                building your first trip.
+                Start building your first
+                personalized trip.
               </p>
 
-              <Link to="/explore">
-                Explore destinations
-              </Link>
+              <button
+                type="button"
+                onClick={() =>
+                  navigate('/trips/new')
+                }
+              >
+                Create your first trip →
+              </button>
+
             </div>
+
           ) : (
+
             <div className="trip-grid">
+
               {trips.map((trip) => (
+
                 <article
                   className="trip-card"
                   key={trip.id}
+                  onClick={() =>
+                    navigate(
+                      `/trips/${trip.id}`
+                    )
+                  }
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => {
+                    if (
+                      event.key === 'Enter' ||
+                      event.key === ' '
+                    ) {
+                      navigate(
+                        `/trips/${trip.id}`
+                      )
+                    }
+                  }}
                 >
+
                   <span>
                     JOURNEY
                   </span>
@@ -259,15 +332,29 @@ export default function Dashboard() {
                       {trip.start_date}
                     </small>
                   )}
+
+                  <div className="trip-card-action">
+                    Open journey →
+                  </div>
+
                 </article>
+
               ))}
+
             </div>
+
           )}
+
         </section>
 
+        {/* PLANNING TIPS */}
+
         <section className="dashboard-section">
+
           <div className="section-heading">
+
             <div>
+
               <span className="eyebrow">
                 PERSONALIZED FOR YOU
               </span>
@@ -275,18 +362,45 @@ export default function Dashboard() {
               <h2>
                 A little travel wisdom.
               </h2>
+
             </div>
+
           </div>
 
-          <div className="tips-grid">
-            {tips.map((tip) => (
-              <PlanningTip
-                key={tip.id}
-                tip={tip}
-              />
-            ))}
-          </div>
+          {tips.length > 0 ? (
+
+            <div className="tips-grid">
+
+              {tips.map((tip) => (
+                <PlanningTip
+                  key={tip.id}
+                  tip={tip}
+                />
+              ))}
+
+            </div>
+
+          ) : (
+
+            <div className="empty-state">
+
+              <span>✦</span>
+
+              <h3>
+                More wisdom is coming.
+              </h3>
+
+              <p>
+                Your personalized planning
+                tips will appear here.
+              </p>
+
+            </div>
+
+          )}
+
         </section>
+
       </main>
     </>
   )

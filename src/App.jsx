@@ -14,6 +14,8 @@ import Dashboard from './pages/Dashboard'
 import Explore from './pages/Explore'
 import Expenses from './pages/Expenses'
 import Profile from './pages/Profile'
+import CreateTripPage from './pages/CreateTripPage'
+import TripDetailsPage from './pages/TripDetailsPage'
 
 import ProtectedRoute from './components/ProtectedRoute'
 import LoadingScreen from './components/LoadingScreen'
@@ -62,6 +64,9 @@ function App() {
 
   return (
     <Routes>
+
+      {/* PUBLIC PAGES */}
+
       <Route
         path="/"
         element={<Landing />}
@@ -70,20 +75,32 @@ function App() {
       <Route
         path="/login"
         element={
-          session
-            ? <Navigate to="/dashboard" replace />
-            : <Login />
+          session ? (
+            <Navigate
+              to="/dashboard"
+              replace
+            />
+          ) : (
+            <Login />
+          )
         }
       />
 
       <Route
         path="/signup"
         element={
-          session
-            ? <Navigate to="/dashboard" replace />
-            : <Signup />
+          session ? (
+            <Navigate
+              to="/dashboard"
+              replace
+            />
+          ) : (
+            <Signup />
+          )
         }
       />
+
+      {/* PROTECTED PAGES */}
 
       <Route
         path="/dashboard"
@@ -121,10 +138,38 @@ function App() {
         }
       />
 
+      {/* TRIP BUILDER */}
+
+      <Route
+        path="/trips/new"
+        element={
+          <ProtectedRoute session={session}>
+            <CreateTripPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/trips/:tripId"
+        element={
+          <ProtectedRoute session={session}>
+            <TripDetailsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* KEEP WILDCARD LAST */}
+
       <Route
         path="*"
-        element={<Navigate to="/" replace />}
+        element={
+          <Navigate
+            to="/"
+            replace
+          />
+        }
       />
+
     </Routes>
   )
 }

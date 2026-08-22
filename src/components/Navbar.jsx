@@ -13,6 +13,7 @@ export default function Navbar({
 
   return (
     <header className="app-navbar">
+
       <Link
         to={authenticated ? '/dashboard' : '/'}
         className="app-brand"
@@ -22,12 +23,17 @@ export default function Navbar({
 
       {authenticated ? (
         <nav className="app-nav-links">
+
           <Link to="/dashboard">
             Dashboard
           </Link>
 
           <Link to="/explore">
             Explore
+          </Link>
+
+          <Link to="/trips/new">
+            Plan a Trip
           </Link>
 
           <Link to="/expenses">
@@ -44,9 +50,11 @@ export default function Navbar({
           >
             Logout
           </button>
+
         </nav>
       ) : (
         <nav className="app-nav-links">
+
           <Link to="/login">
             Login
           </Link>
@@ -57,8 +65,10 @@ export default function Navbar({
           >
             Start planning
           </Link>
+
         </nav>
       )}
+
     </header>
   )
 }

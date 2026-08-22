@@ -510,3 +510,394 @@ button {
       0.01ms !important;
   }
 }
+/* =========================
+   TRIP BUILDER
+========================= */
+
+.trip-details-page {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 70px 0 120px;
+}
+
+.trip-hero {
+  padding: 70px 0 45px;
+}
+
+.trip-hero > span,
+.section-heading > span,
+.form-eyebrow,
+.stop-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  opacity: 0.55;
+}
+
+.trip-hero h1 {
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.9;
+  margin: 18px 0 25px;
+  letter-spacing: -0.06em;
+}
+
+.trip-hero p {
+  max-width: 650px;
+  line-height: 1.7;
+  opacity: 0.7;
+}
+
+.trip-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-top: 45px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.trip-meta > div {
+  padding: 22px;
+  min-height: 100px;
+  background: rgba(128, 128, 128, 0.04);
+}
+
+.trip-meta small,
+.trip-summary span {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+
+.trip-meta strong {
+  font-size: 1.1rem;
+}
+
+.trip-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.primary-button,
+.secondary-button,
+.small-button {
+  border: 0;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 13px 20px;
+  font-weight: 700;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.small-button:hover {
+  transform: translateY(-3px);
+}
+
+.primary-button {
+  background: currentColor;
+  color: Canvas;
+}
+
+.secondary-button,
+.small-button {
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.form-panel {
+  margin: 25px 0;
+  padding: 30px;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 24px;
+  animation: panelIn 0.45s ease both;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.trip-form {
+  max-width: 720px;
+}
+
+.trip-form.compact {
+  max-width: 680px;
+}
+
+.form-header {
+  margin-bottom: 30px;
+}
+
+.form-header h2 {
+  font-size: 2.5rem;
+  margin: 10px 0;
+}
+
+.form-header p {
+  opacity: 0.6;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  background: rgba(128, 128, 128, 0.06);
+  padding: 14px 16px;
+  border-radius: 12px;
+  font: inherit;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: currentColor;
+  transform: translateY(-1px);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-error {
+  margin-bottom: 20px;
+  padding: 12px 15px;
+  border-radius: 12px;
+  background: rgba(255, 70, 70, 0.1);
+  font-size: 0.9rem;
+}
+
+.trip-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin: 50px 0 80px;
+}
+
+.trip-summary > div {
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(128, 128, 128, 0.06);
+  border: 1px solid rgba(128, 128, 128, 0.15);
+}
+
+.trip-summary strong {
+  font-size: 1.7rem;
+}
+
+.section-heading {
+  margin-bottom: 35px;
+}
+
+.section-heading h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: -0.04em;
+  margin-top: 10px;
+}
+
+.stops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stop-card {
+  display: flex;
+  gap: 22px;
+  padding: 28px;
+  border-radius: 26px;
+  border: 1px solid rgba(128, 128, 128, 0.18);
+  background: rgba(128, 128, 128, 0.04);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.stop-card:hover {
+  transform: translateX(7px);
+  border-color: rgba(128, 128, 128, 0.4);
+}
+
+.stop-number {
+  flex: 0 0 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(128, 128, 128, 0.1);
+  font-weight: 800;
+}
+
+.stop-content {
+  flex: 1;
+}
+
+.stop-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.stop-heading h3 {
+  font-size: 2rem;
+  margin: 7px 0;
+}
+
+.stop-country {
+  opacity: 0.45;
+  font-weight: 400;
+}
+
+.stop-dates {
+  display: flex;
+  gap: 10px;
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
+
+.stop-notes {
+  opacity: 0.65;
+  line-height: 1.6;
+}
+
+.activity-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(128, 128, 128, 0.07);
+}
+
+.activity-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(128, 128, 128, 0.12);
+}
+
+.activity-item strong,
+.activity-item span {
+  display: block;
+}
+
+.activity-item span {
+  margin-top: 3px;
+  opacity: 0.5;
+  font-size: 0.78rem;
+}
+
+.empty-mini {
+  margin-top: 20px;
+  opacity: 0.45;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 90px 30px;
+  border: 1px dashed rgba(128, 128, 128, 0.3);
+  border-radius: 28px;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.empty-state h3 {
+  font-size: 2rem;
+}
+
+.empty-state p {
+  opacity: 0.55;
+  margin-bottom: 25px;
+}
+
+.page-loading,
+.page-error {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+@media (max-width: 800px) {
+  .trip-meta,
+  .trip-summary {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trip-hero h1 {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .trip-details-page {
+    width: min(100% - 25px, 1180px);
+  }
+
+  .trip-meta,
+  .trip-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .stop-card {
+    padding: 20px;
+  }
+
+  .stop-heading {
+    flex-direction: column;
+  }
+
+  .stop-heading h3 {
+    font-size: 1.5rem;
+  }
+
+  .trip-actions {
+    flex-direction: column;
+  }
+}
