@@ -1,0 +1,512 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: #111;
+
+  background: #f5f4ef;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+
+  background: #f5f4ef;
+
+  color: #111;
+
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: #111;
+  color: #fff;
+}
+
+/* ----------------------------- */
+/* NAVBAR */
+/* ----------------------------- */
+
+.app-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 1.2rem 5vw;
+
+  background:
+    rgba(245, 244, 239, 0.76);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-bottom:
+    1px solid rgba(0, 0, 0, 0.07);
+}
+
+.app-brand {
+  text-decoration: none;
+
+  font-weight: 750;
+
+  font-size: 1.15rem;
+
+  letter-spacing: -0.04em;
+}
+
+.app-brand span {
+  opacity: 0.4;
+}
+
+.app-nav-links {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1.5rem;
+}
+
+.app-nav-links a {
+  text-decoration: none;
+
+  font-size: 0.9rem;
+
+  opacity: 0.7;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.app-nav-links a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.app-nav-links button {
+  border: 0;
+
+  background: transparent;
+
+  font-size: 0.9rem;
+
+  opacity: 0.6;
+
+  padding: 0;
+}
+
+.app-nav-links button:hover {
+  opacity: 1;
+}
+
+.nav-primary {
+  padding:
+    0.75rem 1rem;
+
+  border-radius: 999px;
+
+  background: #111;
+
+  color: #fff !important;
+
+  opacity: 1 !important;
+}
+
+/* ----------------------------- */
+/* SCROLL PROGRESS */
+/* ----------------------------- */
+
+.scroll-progress {
+  position: fixed;
+
+  left: 0;
+  top: 0;
+
+  width: 100%;
+
+  height: 3px;
+
+  z-index: 9999;
+
+  pointer-events: none;
+}
+
+.scroll-progress-bar {
+  width: 100%;
+  height: 100%;
+
+  background: #111;
+
+  transform-origin: left center;
+}
+
+/* ----------------------------- */
+/* LOADING */
+/* ----------------------------- */
+
+.loading-screen {
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 1.5rem;
+
+  background: #f5f4ef;
+}
+
+.loading-logo {
+  font-size: 1.5rem;
+
+  font-weight: 700;
+
+  letter-spacing: -0.05em;
+}
+
+.loading-logo span {
+  opacity: 0.4;
+}
+
+.loading-line {
+  width: 180px;
+
+  height: 2px;
+
+  background:
+    rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+}
+
+.loading-line span {
+  display: block;
+
+  width: 45%;
+
+  height: 100%;
+
+  background: #111;
+
+  animation:
+    loading 1.2s infinite
+    ease-in-out;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(130%);
+  }
+
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+/* ----------------------------- */
+/* COMMON */
+/* ----------------------------- */
+
+.eyebrow {
+  display: block;
+
+  margin-bottom: 1rem;
+
+  font-size: 0.68rem;
+
+  font-weight: 650;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+
+  opacity: 0.5;
+}
+
+/* ----------------------------- */
+/* HORIZONTAL SCROLL */
+/* ----------------------------- */
+
+.horizontal-section {
+  min-height: 100vh;
+
+  position: relative;
+
+  overflow: hidden;
+
+  padding-top: 1px;
+
+  background: #111;
+
+  color: #fff;
+}
+
+.horizontal-header {
+  position: absolute;
+
+  top: 11vh;
+  left: 7vw;
+
+  z-index: 5;
+}
+
+.horizontal-header h2 {
+  margin: 0;
+
+  font-size:
+    clamp(3.5rem, 7vw, 8rem);
+
+  line-height: 0.83;
+
+  letter-spacing: -0.075em;
+}
+
+.horizontal-header p {
+  margin-top: 1.5rem;
+
+  opacity: 0.5;
+}
+
+.destination-track {
+  display: flex;
+
+  gap: 2rem;
+
+  width: max-content;
+
+  padding:
+    36vh 8vw 10vh;
+}
+
+.destination-panel {
+  position: relative;
+
+  width:
+    min(70vw, 580px);
+
+  min-height: 52vh;
+
+  padding: 2.5rem;
+
+  border-radius: 32px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      145deg,
+      #292929,
+      #151515
+    );
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 30px 100px
+    rgba(0, 0, 0, 0.4);
+
+  transition:
+    transform 0.5s ease;
+}
+
+.destination-panel::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 75% 20%,
+      rgba(255, 255, 255, 0.12),
+      transparent 35%
+    );
+
+  pointer-events: none;
+}
+
+.destination-panel:hover {
+  transform:
+    translateY(-10px)
+    rotateX(1deg);
+}
+
+.destination-number {
+  position: absolute;
+
+  top: 2rem;
+  right: 2rem;
+
+  font-size: 0.8rem;
+
+  opacity: 0.4;
+}
+
+.destination-panel > div:last-child {
+  position: relative;
+  z-index: 1;
+}
+
+.destination-panel span {
+  font-size: 0.7rem;
+
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+
+  opacity: 0.5;
+}
+
+.destination-panel h3 {
+  margin: 0.7rem 0 1rem;
+
+  font-size:
+    clamp(3rem, 6vw, 6rem);
+
+  line-height: 0.85;
+
+  letter-spacing: -0.07em;
+}
+
+.destination-panel p {
+  max-width: 390px;
+
+  line-height: 1.7;
+
+  opacity: 0.55;
+}
+
+.destination-panel button {
+  margin-top: 1.5rem;
+
+  padding:
+    0.85rem 1.1rem;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.2);
+
+  border-radius: 999px;
+
+  color: #fff;
+
+  background: transparent;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.destination-panel button:hover {
+  background: #fff;
+  color: #111;
+}
+
+/* ----------------------------- */
+/* RESPONSIVE */
+/* ----------------------------- */
+
+@media (max-width: 800px) {
+  .app-nav-links a:not(.nav-primary) {
+    display: none;
+  }
+
+  .app-navbar {
+    padding:
+      1rem 5vw;
+  }
+
+  .horizontal-header {
+    left: 6vw;
+  }
+
+  .destination-track {
+    padding-left: 6vw;
+  }
+
+  .destination-panel {
+    width: 78vw;
+  }
+}
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+}

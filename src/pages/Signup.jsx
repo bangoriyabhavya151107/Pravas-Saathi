@@ -1,155 +1,191 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom'
+
 import { supabase } from '../lib/supabase'
 
 export default function Signup() {
   const navigate = useNavigate()
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirm, setConfirm] = useState('')
+  const [fullName, setFullName] =
+    useState('')
 
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] =
+    useState('')
 
-  async function handleSignup(e) {
-    e.preventDefault()
+  const [password, setPassword] =
+    useState('')
+
+  const [loading, setLoading] =
+    useState(false)
+
+  const [error, setError] =
+    useState('')
+
+  const [message, setMessage] =
+    useState('')
+
+  async function handleSignup(event) {
+    event.preventDefault()
 
     setError('')
     setMessage('')
-
-    if (password !== confirm) {
-      setError('Passwords do not match.')
-      return
-    }
-
-    if (password.length < 8) {
-      setError('Password must contain at least 8 characters.')
-      return
-    }
-
     setLoading(true)
 
-    const { data, error } =
-      await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: name
-          },
-          emailRedirectTo:
-            window.location.origin
-        }
-      })
-
-    setLoading(false)
+    const {
+      data,
+      error,
+    } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: {
+        data: {
+          full_name:
+            fullName.trim(),
+        },
+      },
+    })
 
     if (error) {
       setError(error.message)
+      setLoading(false)
       return
     }
 
     if (data.session) {
-      navigate('/')
+      navigate('/dashboard')
     } else {
       setMessage(
-        'Account created. Check your email to confirm your account.'
+        'Account created. Please check your email to confirm your account.'
       )
     }
+
+    setLoading(false)
   }
 
   return (
     <div className="auth-page">
-      <div className="auth-panel">
+      <div className="auth-visual">
+        <Link
+          to="/"
+          className="auth-brand"
+        >
+          Pravas Saathi<span>.</span>
+        </Link>
 
-        <div className="brand">
-          <span className="brand-icon">P</span>
-          Pravāsathi
+        <div>
+          <span className="eyebrow">
+            BEGIN YOUR JOURNEY
+          </span>
+
+          <h1>
+            Your next
+            <br />
+            story starts here.
+          </h1>
         </div>
+      </div>
 
-        <h1>Begin your journey.</h1>
+      <div className="auth-panel">
+        <div className="auth-box">
+          <span className="eyebrow">
+            CREATE ACCOUNT
+          </span>
 
-        <p>
-          Create your personal travel space.
-        </p>
+          <h2>
+            Welcome to
+            <br />
+            Pravas Saathi.
+          </h2>
 
-        <form onSubmit={handleSignup}>
+          <p className="auth-description">
+            Create your travel profile and start
+            planning meaningful journeys.
+          </p>
 
-          <label>Full name</label>
+          <form onSubmit={handleSignup}>
+            <label>
+              Full name
 
-          <input
-            value={name}
-            onChange={(e) =>
-              setName(e.target.value)
-            }
-            required
-          />
+              <input
+                type="text"
+                value={fullName}
+                onChange={(event) =>
+                  setFullName(
+                    event.target.value
+                  )
+                }
+                placeholder="Your name"
+                required
+              />
+            </label>
 
-          <label>Email</label>
+            <label>
+              Email
 
-          <input
-            type="email"
-            value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-            required
-          />
+              <input
+                type="email"
+                value={email}
+                onChange={(event) =>
+                  setEmail(
+                    event.target.value
+                  )
+                }
+                placeholder="you@example.com"
+                required
+              />
+            </label>
 
-          <label>Password</label>
+            <label>
+              Password
 
-          <input
-            type="password"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            minLength={8}
-            required
-          />
+              <input
+                type="password"
+                value={password}
+                onChange={(event) =>
+                  setPassword(
+                    event.target.value
+                  )
+                }
+                placeholder="At least 6 characters"
+                minLength={6}
+                required
+              />
+            </label>
 
-          <label>Confirm password</label>
+            {error && (
+              <div className="form-error">
+                {error}
+              </div>
+            )}
 
-          <input
-            type="password"
-            value={confirm}
-            onChange={(e) =>
-              setConfirm(e.target.value)
-            }
-            required
-          />
+            {message && (
+              <div className="form-success">
+                {message}
+              </div>
+            )}
 
-          {error && (
-            <div className="error">
-              {error}
-            </div>
-          )}
+            <button
+              type="submit"
+              className="form-button"
+              disabled={loading}
+            >
+              {loading
+                ? 'Creating account...'
+                : 'Create account →'}
+            </button>
+          </form>
 
-          {message && (
-            <div className="success">
-              {message}
-            </div>
-          )}
+          <p className="auth-switch">
+            Already have an account?
 
-          <button className="primary-btn">
-            {loading
-              ? 'Creating account...'
-              : 'Create account'}
-          </button>
-
-        </form>
-
-        <p>
-          Already have an account?
-          {' '}
-          <Link to="/login">
-            Login
-          </Link>
-        </p>
-
+            <Link to="/login">
+              Log in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )

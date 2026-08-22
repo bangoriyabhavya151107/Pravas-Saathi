@@ -1,143 +1,249 @@
 import { useEffect, useState } from 'react'
+
+import Navbar from '../components/Navbar'
+import ActivityCard from '../components/ActivityCard'
+
 import { supabase } from '../lib/supabase'
 
 export default function Explore() {
-
   const [cities, setCities] =
     useState([])
 
   const [activities, setActivities] =
     useState([])
 
+  const [selectedCity, setSelectedCity] =
+    useState('all')
+
+  const [category, setCategory] =
+    useState('all')
+
   const [search, setSearch] =
     useState('')
 
+  const [loading, setLoading] =
+    useState(true)
+
   useEffect(() => {
+    loadExplore()
+  }, [])
 
-    async function load() {
+  async function loadExplore() {
+    setLoading(true)
 
-      const citiesResult =
-        await supabase
-          .from('cities')
-          .select('*')
-          .order('popularity', {
-            ascending: false
-          })
+    const [
+      citiesResponse,
+      activitiesResponse,
+    ] = await Promise.all([
+      supabase
+        .from('cities')
+        .select('*')
+        .order('popularity', {
+          ascending: false,
+        }),
 
-      const activitiesResult =
-        await supabase
-          .from('activities')
-          .select('*')
-          .order('name')
+      supabase
+        .from('activities')
+        .select(`
+          *,
+          cities (
+            name
+          )
+        `)
+        .order('name'),
+    ])
 
-      setCities(citiesResult.data || [])
-      setActivities(
-        activitiesResult.data || []
+    if (citiesResponse.error) {
+      console.error(
+        citiesResponse.error
       )
     }
 
-    load()
+    if (activitiesResponse.error) {
+      console.error(
+        activitiesResponse.error
+      )
+    }
 
-  }, [])
-
-  const filtered =
-    cities.filter(city =>
-      `${city.name} ${city.country}`
-        .toLowerCase()
-        .includes(search.toLowerCase())
+    setCities(
+      citiesResponse.data || []
     )
 
+    setActivities(
+      activitiesResponse.data || []
+    )
+
+    setLoading(false)
+  }
+
+  const filteredActivities =
+    activities.filter((activity) => {
+      const matchesCity =
+        selectedCity === 'all' ||
+        activity.city_id === selectedCity
+
+      const matchesCategory =
+        category === 'all' ||
+        activity.category === category
+
+      const searchValue =
+        search.toLowerCase()
+
+      const matchesSearch =
+        !searchValue ||
+        activity.name
+          ?.toLowerCase()
+          .includes(searchValue) ||
+        activity.description
+          ?.toLowerCase()
+          .includes(searchValue)
+
+      return (
+        matchesCity &&
+        matchesCategory &&
+        matchesSearch
+      )
+    })
+
   return (
-    <div className="page">
+    <>
+      <Navbar authenticated />
 
-      <span className="eyebrow">
-        DISCOVER
-      </span>
+      <main className="explore-page">
+        <section className="explore-header">
+          <span className="eyebrow">
+            DISCOVER
+          </span>
 
-      <h1>
-        Explore the world
-      </h1>
+          <h1>
+            Find your
+            <br />
+            next place.
+          </h1>
 
-      <input
-        placeholder="Search destination..."
-        value={search}
-        onChange={e =>
-          setSearch(e.target.value)
-        }
-      />
+          <p>
+            Explore destinations and experiences
+            for your next journey.
+          </p>
+        </section>
 
-      <h2>Destinations</h2>
-
-      <div className="grid">
-
-        {filtered.map(city => (
-
-          <div className="card" key={city.id}>
-
-            <div className="card-image">
-              {city.name.charAt(0)}
-            </div>
-
-            <h3>
+        <section className="city-strip">
+          {cities.map((city) => (
+            <button
+              key={city.id}
+              type="button"
+              className={
+                selectedCity === city.id
+                  ? 'city-pill active'
+                  : 'city-pill'
+              }
+              onClick={() =>
+                setSelectedCity(
+                  city.id
+                )
+              }
+            >
               {city.name}
-            </h3>
+            </button>
+          ))}
 
-            <p>
-              {city.country}
-            </p>
-
-            <p>
-              Cost index:
-              {' '}
-              {city.cost_index}
-            </p>
-
-            <p>
-              Popularity:
-              {' '}
-              {city.popularity}
-            </p>
-
-          </div>
-
-        ))}
-
-      </div>
-
-      <h2>
-        Experiences
-      </h2>
-
-      <div className="grid">
-
-        {activities.map(activity => (
-
-          <div
-            className="card"
-            key={activity.id}
+          <button
+            type="button"
+            className={
+              selectedCity === 'all'
+                ? 'city-pill active'
+                : 'city-pill'
+            }
+            onClick={() =>
+              setSelectedCity('all')
+            }
           >
+            All
+          </button>
+        </section>
 
-            <h3>
-              {activity.name}
-            </h3>
+        <section className="explore-controls">
+          <input
+            type="search"
+            placeholder="Search activities..."
+            value={search}
+            onChange={(event) =>
+              setSearch(
+                event.target.value
+              )
+            }
+          />
 
-            <p>
-              {activity.description}
-            </p>
+          <select
+            value={category}
+            onChange={(event) =>
+              setCategory(
+                event.target.value
+              )
+            }
+          >
+            <option value="all">
+              All categories
+            </option>
 
-            <strong>
-              ₹
-              {Number(
-                activity.estimated_cost
-              ).toLocaleString('en-IN')}
-            </strong>
+            <option value="heritage">
+              Heritage
+            </option>
 
+            <option value="food">
+              Food
+            </option>
+
+            <option value="nature">
+              Nature
+            </option>
+
+            <option value="adventure">
+              Adventure
+            </option>
+
+            <option value="culture">
+              Culture
+            </option>
+
+            <option value="beach">
+              Beach
+            </option>
+          </select>
+        </section>
+
+        {loading ? (
+          <div className="dashboard-loading">
+            Discovering experiences...
           </div>
+        ) : (
+          <section className="activity-grid">
+            {filteredActivities.length ===
+            0 ? (
+              <div className="empty-state">
+                <span>🔎</span>
 
-        ))}
+                <h3>
+                  Nothing found.
+                </h3>
 
-      </div>
-
-    </div>
+                <p>
+                  Try changing your filters.
+                </p>
+              </div>
+            ) : (
+              filteredActivities.map(
+                (activity) => (
+                  <ActivityCard
+                    key={activity.id}
+                    activity={activity}
+                  />
+                )
+              )
+            )}
+          </section>
+        )}
+      </main>
+    </>
   )
 }

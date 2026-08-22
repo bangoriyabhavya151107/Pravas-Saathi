@@ -1,0 +1,467 @@
+.landing-page {
+  min-height: 100vh;
+}
+
+/* ----------------------------- */
+/* HERO */
+/* ----------------------------- */
+
+.hero-section {
+  min-height: 100vh;
+
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(300px, 0.8fr);
+
+  align-items: center;
+
+  gap: 4rem;
+
+  padding:
+    9rem 7vw 6rem;
+
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+
+  z-index: 5;
+
+  max-width: 780px;
+}
+
+.hero-content h1 {
+  margin: 0;
+
+  font-size:
+    clamp(5rem, 10vw, 10.5rem);
+
+  line-height: 0.77;
+
+  letter-spacing: -0.09em;
+}
+
+.hero-content h1 em {
+  font-style: normal;
+
+  opacity: 0.3;
+}
+
+.hero-content p {
+  max-width: 530px;
+
+  margin:
+    3rem 0 2rem;
+
+  font-size: 1.08rem;
+
+  line-height: 1.8;
+
+  opacity: 0.62;
+}
+
+.hero-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.8rem;
+}
+
+.hero-actions a {
+  text-decoration: none;
+
+  padding:
+    1rem 1.35rem;
+
+  border-radius: 999px;
+
+  background: #111;
+
+  color: #fff;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.hero-actions a:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 30px
+    rgba(0, 0, 0, 0.15);
+}
+
+.hero-actions a + a {
+  background: transparent;
+
+  color: #111;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.15);
+}
+
+/* ----------------------------- */
+/* HERO VISUAL */
+/* ----------------------------- */
+
+.hero-visual {
+  min-height: 540px;
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-glow {
+  position: absolute;
+
+  width: 430px;
+  height: 430px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0, 0, 0, 0.1),
+      transparent 68%
+    );
+
+  filter: blur(5px);
+}
+
+.floating-card {
+  position: absolute;
+
+  width: 260px;
+
+  padding: 1.6rem;
+
+  border-radius: 28px;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    0 35px 100px
+    rgba(0, 0, 0, 0.13);
+
+  transition:
+    transform 0.5s ease;
+}
+
+.floating-card span {
+  display: block;
+
+  font-size: 0.65rem;
+
+  letter-spacing: 0.14em;
+
+  opacity: 0.45;
+}
+
+.floating-card strong {
+  display: block;
+
+  margin:
+    0.7rem 0 0.3rem;
+
+  font-size: 2.1rem;
+
+  letter-spacing: -0.06em;
+}
+
+.floating-card small {
+  opacity: 0.5;
+}
+
+.card-main {
+  top: 17%;
+  left: 10%;
+
+  transform:
+    rotate(-6deg);
+}
+
+.card-secondary {
+  right: 0;
+  bottom: 17%;
+
+  transform:
+    rotate(7deg);
+}
+
+.card-mini {
+  width: 130px;
+
+  right: 18%;
+  top: 42%;
+
+  transform:
+    rotate(10deg);
+
+  animation:
+    floating 4s
+    ease-in-out
+    infinite;
+}
+
+.card-mini strong {
+  font-size: 3rem;
+}
+
+@keyframes floating {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(10deg);
+  }
+
+  50% {
+    transform:
+      translateY(-16px)
+      rotate(7deg);
+  }
+}
+
+/* ----------------------------- */
+/* STATEMENT */
+/* ----------------------------- */
+
+.statement-section {
+  min-height: 90vh;
+
+  display: flex;
+
+  align-items: center;
+
+  padding:
+    12vh 12vw;
+}
+
+.statement-section h2 {
+  margin: 0;
+
+  max-width: 1050px;
+
+  font-size:
+    clamp(4rem, 8vw, 9rem);
+
+  line-height: 0.84;
+
+  letter-spacing: -0.08em;
+}
+
+.statement-section p {
+  max-width: 600px;
+
+  margin-top: 3rem;
+
+  font-size: 1.15rem;
+
+  line-height: 1.8;
+
+  opacity: 0.6;
+}
+
+/* ----------------------------- */
+/* PROCESS */
+/* ----------------------------- */
+
+.process-section {
+  padding:
+    15vh 7vw;
+}
+
+.process-section h2 {
+  margin: 0;
+
+  font-size:
+    clamp(4rem, 8vw, 9rem);
+
+  line-height: 0.82;
+
+  letter-spacing: -0.08em;
+}
+
+.process-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 1rem;
+
+  margin-top: 10vh;
+}
+
+.process-grid article {
+  min-height: 390px;
+
+  padding: 1.8rem;
+
+  border-top:
+    1px solid
+    rgba(0, 0, 0, 0.2);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+}
+
+.process-grid article > span {
+  opacity: 0.4;
+
+  font-size: 0.8rem;
+}
+
+.process-grid h3 {
+  margin: 0;
+
+  font-size: 3rem;
+
+  letter-spacing: -0.07em;
+}
+
+.process-grid p {
+  max-width: 350px;
+
+  line-height: 1.7;
+
+  opacity: 0.58;
+}
+
+/* ----------------------------- */
+/* FINAL CTA */
+/* ----------------------------- */
+
+.final-cta {
+  min-height: 90vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 10vh 5vw;
+}
+
+.final-cta h2 {
+  margin: 0;
+
+  font-size:
+    clamp(5rem, 11vw, 12rem);
+
+  line-height: 0.75;
+
+  letter-spacing: -0.09em;
+}
+
+.final-cta a {
+  display: inline-block;
+
+  margin-top: 4rem;
+
+  padding:
+    1.15rem 1.5rem;
+
+  border-radius: 999px;
+
+  background: #111;
+
+  color: #fff;
+
+  text-decoration: none;
+}
+
+/* ----------------------------- */
+/* FOOTER */
+/* ----------------------------- */
+
+.landing-footer {
+  padding:
+    3rem 7vw;
+
+  border-top:
+    1px solid
+    rgba(0, 0, 0, 0.1);
+
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.landing-footer span {
+  opacity: 0.45;
+}
+
+/* ----------------------------- */
+/* MOBILE */
+/* ----------------------------- */
+
+@media (max-width: 900px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+
+    padding-top: 9rem;
+  }
+
+  .hero-visual {
+    min-height: 450px;
+  }
+
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-content h1 {
+    font-size:
+      clamp(4rem, 18vw, 7rem);
+  }
+
+  .hero-visual {
+    transform: scale(0.85);
+  }
+
+  .statement-section {
+    padding:
+      10vh 7vw;
+  }
+
+  .statement-section h2 {
+    font-size:
+      clamp(3.5rem, 15vw, 6rem);
+  }
+
+  .landing-footer {
+    flex-direction: column;
+
+    gap: 0.8rem;
+  }
+}

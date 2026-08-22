@@ -1,99 +1,132 @@
+import { useEffect, useState } from 'react'
 import {
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from 'react-router-dom'
 
-import ProtectedRoute
-  from './components/ProtectedRoute'
+import { supabase } from './lib/supabase'
 
-import AppLayout
-  from './components/AppLayout'
-
+import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
-import Trips from './pages/Trips'
-import CreateTrip from './pages/CreateTrip'
-import TripDetail from './pages/TripDetail'
-import Itinerary from './pages/Itinerary'
 import Explore from './pages/Explore'
-import Calendar from './pages/Calendar'
+import Expenses from './pages/Expenses'
 import Profile from './pages/Profile'
-import SharedTrip from './pages/SharedTrip'
 
-export default function App() {
+import ProtectedRoute from './components/ProtectedRoute'
+import LoadingScreen from './components/LoadingScreen'
+
+import './styles/landing.css'
+import './styles/auth.css'
+import './styles/dashboard.css'
+
+function App() {
+  const [session, setSession] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let mounted = true
+
+    async function loadSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (mounted) {
+        setSession(session)
+        setLoading(false)
+      }
+    }
+
+    loadSession()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session)
+      }
+    )
+
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  if (loading) {
+    return <LoadingScreen />
+  }
+
   return (
     <Routes>
+      <Route
+        path="/"
+        element={<Landing />}
+      />
 
       <Route
         path="/login"
-        element={<Login />}
+        element={
+          session
+            ? <Navigate to="/dashboard" replace />
+            : <Login />
+        }
       />
 
       <Route
         path="/signup"
-        element={<Signup />}
+        element={
+          session
+            ? <Navigate to="/dashboard" replace />
+            : <Signup />
+        }
       />
 
       <Route
-        path="/share/:id"
-        element={<SharedTrip />}
+        path="/dashboard"
+        element={
+          <ProtectedRoute session={session}>
+            <Dashboard />
+          </ProtectedRoute>
+        }
       />
 
-      <Route element={<ProtectedRoute />}>
+      <Route
+        path="/explore"
+        element={
+          <ProtectedRoute session={session}>
+            <Explore />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route element={<AppLayout />}>
+      <Route
+        path="/expenses"
+        element={
+          <ProtectedRoute session={session}>
+            <Expenses />
+          </ProtectedRoute>
+        }
+      />
 
-          <Route
-            path="/"
-            element={<Dashboard />}
-          />
-
-          <Route
-            path="/trips"
-            element={<Trips />}
-          />
-
-          <Route
-            path="/trips/new"
-            element={<CreateTrip />}
-          />
-
-          <Route
-            path="/trips/:id"
-            element={<TripDetail />}
-          />
-
-          <Route
-            path="/trips/:id/itinerary"
-            element={<Itinerary />}
-          />
-
-          <Route
-            path="/explore"
-            element={<Explore />}
-          />
-
-          <Route
-            path="/calendar"
-            element={<Calendar />}
-          />
-
-          <Route
-            path="/profile"
-            element={<Profile />}
-          />
-
-        </Route>
-
-      </Route>
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute session={session}>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="*"
-        element={<Navigate to="/" />}
+        element={<Navigate to="/" replace />}
       />
-
     </Routes>
   )
 }
+
+export default App
