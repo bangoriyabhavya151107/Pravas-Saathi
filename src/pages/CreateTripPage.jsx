@@ -6,9 +6,7 @@ export default function CreateTripPage() {
   const navigate = useNavigate()
 
   function handleCreated(trip) {
-    if (!trip?.id) {
-      return
-    }
+    if (!trip?.id) return
 
     navigate(`/trips/${trip.id}`)
   }
@@ -21,17 +19,19 @@ export default function CreateTripPage() {
 
         <div className="trip-create-wrapper">
 
-          <button
-            type="button"
-            className="back-button"
-            onClick={() => navigate('/dashboard')}
-          >
-            ← Back to dashboard
-          </button>
+          <div className="trip-create-back">
+            <button
+              type="button"
+              className="back-button"
+              onClick={() => navigate('/dashboard')}
+            >
+              ← Back to dashboard
+            </button>
+          </div>
 
-          <CreateTrip
-            onCreated={handleCreated}
-          />
+          <div className="trip-create-content">
+            <CreateTrip onCreated={handleCreated} />
+          </div>
 
         </div>
 
