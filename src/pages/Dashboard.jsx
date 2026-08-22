@@ -1,82 +1,144 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../components/AuthProvider'
 
 export default function Dashboard() {
-  const navigate = useNavigate()
 
-  const [user, setUser] = useState(null)
-  const [profile, setProfile] = useState(null)
+  const { user } = useAuth()
+
+  const [profile, setProfile] =
+    useState(null)
+
+  const [trips, setTrips] =
+    useState([])
 
   useEffect(() => {
-    async function loadDashboard() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
 
-      if (!user) {
-        navigate('/login')
-        return
-      }
+    async function load() {
 
-      setUser(user)
+      const { data: profileData } =
+        await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('id', user.id)
+          .single()
 
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('full_name, avatar_url, language, timezone')
-        .eq('id', user.id)
-        .single()
+      const { data: tripData } =
+        await supabase
+          .from('trips')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('start_date', {
+            ascending: true
+          })
+          .limit(5)
 
-      if (!error) {
-        setProfile(data)
-      }
+      setProfile(profileData)
+      setTrips(tripData || [])
     }
 
-    loadDashboard()
-  }, [navigate])
+    load()
 
-  async function handleLogout() {
-    await supabase.auth.signOut()
-    navigate('/login')
-  }
+  }, [user.id])
+
+  const name =
+    profile?.full_name ||
+    user.email.split('@')[0]
 
   return (
-    <main>
-      <header>
-        <h1>Pravāsathi</h1>
 
-        <button onClick={handleLogout}>
-          Logout
-        </button>
-      </header>
+    <div className="page">
+
+      <div className="hero">
+
+        <div>
+
+          <span className="eyebrow">
+            YOUR TRAVEL SPACE
+          </span>
+
+          <h1>
+            Namaste, {name} ✦
+          </h1>
+
+          <p>
+            Where will your next story take you?
+          </p>
+
+        </div>
+
+        <Link
+          className="primary-btn"
+          to="/trips/new"
+        >
+          + Plan New Trip
+        </Link>
+
+      </div>
 
       <section>
-        <h2>
-          Welcome back{profile?.full_name ? `, ${profile.full_name}` : ''} 👋
-        </h2>
 
-        <p>
-          Your next journey starts here.
-        </p>
+        <h2>Recent journeys</h2>
 
-        <button>
-          + Plan New Trip
-        </button>
+        {trips.length === 0 ? (
+
+          <div className="empty">
+
+            <h3>
+              Your map is waiting.
+            </h3>
+
+            <p>
+              Create your first journey.
+            </p>
+
+            <Link
+              className="primary-btn"
+              to="/trips/new"
+            >
+              Create Trip
+            </Link>
+
+          </div>
+
+        ) : (
+
+          <div className="grid">
+
+            {trips.map(trip => (
+
+              <Link
+                className="card"
+                key={trip.id}
+                to={`/trips/${trip.id}`}
+              >
+
+                <div className="card-image">
+                  {trip.title.charAt(0)}
+                </div>
+
+                <h3>
+                  {trip.title}
+                </h3>
+
+                <p>
+                  {trip.start_date}
+                  {' → '}
+                  {trip.end_date}
+                </p>
+
+              </Link>
+
+            ))}
+
+          </div>
+
+        )}
+
       </section>
 
-      <nav>
-        <a href="/dashboard">Home</a>
-        <a href="#">My Trips</a>
-        <a href="#">Explore</a>
-        <a href="#">Calendar</a>
-        <a href="#">Profile</a>
-      </nav>
-
-      {user && (
-        <small>
-          Signed in as {user.email}
-        </small>
-      )}
-    </main>
+    </div>
   )
 }
