@@ -5,43 +5,45 @@ import { supabase } from '../lib/supabase'
 export default function Signup() {
   const navigate = useNavigate()
 
-  const [fullName, setFullName] = useState('')
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
 
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  async function handleSignup(event) {
-    event.preventDefault()
+  async function handleSignup(e) {
+    e.preventDefault()
 
     setError('')
     setMessage('')
 
-    if (password !== confirmPassword) {
+    if (password !== confirm) {
       setError('Passwords do not match.')
       return
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters.')
+      setError('Password must contain at least 8 characters.')
       return
     }
 
     setLoading(true)
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-        },
-        emailRedirectTo: window.location.origin,
-      },
-    })
+    const { data, error } =
+      await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name
+          },
+          emailRedirectTo:
+            window.location.origin
+        }
+      })
 
     setLoading(false)
 
@@ -51,64 +53,104 @@ export default function Signup() {
     }
 
     if (data.session) {
-      navigate('/dashboard')
+      navigate('/')
     } else {
       setMessage(
-        'Account created. Please check your email to confirm your account.'
+        'Account created. Check your email to confirm your account.'
       )
     }
   }
 
   return (
-    <main>
-      <h1>Pravāsathi</h1>
-      <h2>Create your account</h2>
+    <div className="auth-page">
+      <div className="auth-panel">
 
-      <form onSubmit={handleSignup}>
-        <input
-          type="text"
-          placeholder="Full name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-        />
+        <div className="brand">
+          <span className="brand-icon">P</span>
+          Pravāsathi
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <h1>Begin your journey.</h1>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={8}
-        />
+        <p>
+          Create your personal travel space.
+        </p>
 
-        <input
-          type="password"
-          placeholder="Confirm password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
+        <form onSubmit={handleSignup}>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Creating account...' : 'Create account'}
-        </button>
-      </form>
+          <label>Full name</label>
 
-      {error && <p>{error}</p>}
-      {message && <p>{message}</p>}
+          <input
+            value={name}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
+            required
+          />
 
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
-    </main>
+          <label>Email</label>
+
+          <input
+            type="email"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+            required
+          />
+
+          <label>Password</label>
+
+          <input
+            type="password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            minLength={8}
+            required
+          />
+
+          <label>Confirm password</label>
+
+          <input
+            type="password"
+            value={confirm}
+            onChange={(e) =>
+              setConfirm(e.target.value)
+            }
+            required
+          />
+
+          {error && (
+            <div className="error">
+              {error}
+            </div>
+          )}
+
+          {message && (
+            <div className="success">
+              {message}
+            </div>
+          )}
+
+          <button className="primary-btn">
+            {loading
+              ? 'Creating account...'
+              : 'Create account'}
+          </button>
+
+        </form>
+
+        <p>
+          Already have an account?
+          {' '}
+          <Link to="/login">
+            Login
+          </Link>
+        </p>
+
+      </div>
+    </div>
   )
 }

@@ -7,20 +7,20 @@ export default function Login() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  async function handleLogin(event) {
-    event.preventDefault()
+  async function handleLogin(e) {
+    e.preventDefault()
 
     setError('')
     setLoading(true)
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    const { error } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      })
 
     setLoading(false)
 
@@ -29,41 +29,65 @@ export default function Login() {
       return
     }
 
-    navigate('/dashboard')
+    navigate('/')
   }
 
   return (
-    <main>
-      <h1>Pravāsathi</h1>
-      <h2>Welcome back</h2>
+    <div className="auth-page">
+      <div className="auth-panel">
+        <div className="brand">
+          <span className="brand-icon">P</span>
+          Pravāsathi
+        </div>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <h1>Welcome back.</h1>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <p>
+          Your next journey is waiting.
+        </p>
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Signing in...' : 'Login'}
-        </button>
-      </form>
+        <form onSubmit={handleLogin}>
+          <label>Email</label>
 
-      {error && <p>{error}</p>}
+          <input
+            type="email"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+            required
+          />
 
-      <p>
-        Don't have an account? <Link to="/signup">Create one</Link>
-      </p>
-    </main>
+          <label>Password</label>
+
+          <input
+            type="password"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            required
+          />
+
+          {error && (
+            <div className="error">
+              {error}
+            </div>
+          )}
+
+          <button className="primary-btn">
+            {loading ? 'Signing in...' : 'Login'}
+          </button>
+        </form>
+
+        <p>
+          New traveller?
+          {' '}
+          <Link to="/signup">
+            Create account
+          </Link>
+        </p>
+      </div>
+    </div>
   )
 }
